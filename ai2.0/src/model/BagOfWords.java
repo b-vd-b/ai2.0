@@ -4,13 +4,12 @@
 package model;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
 
 import controller.FileHandler;
-import controller.Tokenizer;
 
 /**
  * @author bvdb
@@ -68,6 +67,7 @@ public class BagOfWords implements Definitions {
 		return categories;
 	}
 
+	
 	public void fillVocabulary(String[] categories){
 		this.categories = categories;
 		//int totalDocumentCount = 0;
@@ -103,13 +103,37 @@ public class BagOfWords implements Definitions {
 				}
 				
 			}
+			
 			documentStats.put(cat, docsInClass);
 			distinctWordStats.put(cat, distinctWordsInClass);
 			totalWordStats.put(cat, totalWordsInClass);
-			System.out.println(documentStats);
-			//System.out.println(getBag().toString());
-			System.out.println(distinctWordStats);
-			System.out.println(totalWordStats);
+			
 		}
+		/*
+		 * This removes all words that occur only once for a category
+		 */
+		HashMap<String, HashMap<String,Double>> deepBow = new HashMap<String, HashMap<String,Double>>(bagOfWords);
+		bagOfWords.clear();
+		for (Entry<String, HashMap<String, Double>> entry : deepBow.entrySet()){
+			String word = entry.getKey();
+			HashMap<String, Double> tempMap = entry.getValue();
+			HashMap<String, Double> tempMap2 = new HashMap<String, Double>(tempMap);
+
+			for (String tmp : tempMap.keySet()) {
+				if (tempMap.get(tmp) == 1.0) {
+					tempMap2.remove(tmp);
+				}
+			}
+			for (String tmp2 : tempMap2.keySet()){
+			if(tempMap2.containsKey(tmp2)){
+				bagOfWords.put(word,tempMap2);
+				}
+			}
+		}
+		System.out.println(bagOfWords.toString());
+		System.out.println(documentStats);
+		//System.out.println(getBag().toString());
+		System.out.println(distinctWordStats);
+		System.out.println(totalWordStats);
 	}
 }
