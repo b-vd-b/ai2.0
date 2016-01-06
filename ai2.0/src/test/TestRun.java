@@ -49,6 +49,7 @@ public class TestRun implements Definitions {
 		if (listOfFiles.length != 0){
 			for (int i=0; i < listOfFiles.length; i++){
 				File file = listOfFiles[i];
+				tnb.TrainMultinomialNaiveBayes(bow);
 				/*
 				 * Create a verdict, i.e. to which category does the testing file belong, according to the classifier 
 				 */

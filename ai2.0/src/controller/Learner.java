@@ -52,14 +52,42 @@ public class Learner implements Definitions {
 				System.out.println(count + ". " + cat);
 				count++;
 			}
+			System.out.println(count + ". -Test file belongs to new category-");
 			System.out.println("Input the integer of the correct category, please.");
 			/*
 			 * Parse the user's input number, and move the file to the correct category in the training set.
 			 */
 			try{
 				int i = Integer.parseInt(br.readLine());
-				file.renameTo(new File(TRAINING_DIR+"/"+SET+"/"+bow.getCategories()[i-1]+"/"+file.getName()));
-				System.out.println("Allright, file is moved to correct training set, "+bow.getCategories()[i-1]+". Retraining now...");
+				String cat = "";
+				/*
+				 * Look if user has chosen to make a new category
+				 */
+				if (i == count){
+					/*
+					 * Let user create a name for the new category
+					 */
+					System.out.println("Please provide a name for the new category");
+					String newCat = br.readLine();
+					File dir = new File(TRAINING_DIR+"/"+SET+"/"+newCat);
+					boolean success = dir.mkdirs();
+					if (!success) {
+						System.err.println("Failed to create a new category directory");
+					} else {
+						/*
+						 * If directory creation for the new category has succeeded, create a new category in the BagOfWords 
+						 *  AND move the testfile to the new directory
+						 */
+						bow.addCategory(newCat);
+						cat = newCat;
+						file.renameTo(new File(TRAINING_DIR+"/"+SET+"/"+newCat+"/"+file.getName()));
+						System.out.println("Succesfully added "+newCat+" to the database of categories.");
+					}
+				} else {
+					file.renameTo(new File(TRAINING_DIR+"/"+SET+"/"+bow.getCategories()[i-1]+"/"+file.getName()));
+					cat = bow.getCategories()[i-1];
+				}
+				System.out.println("Allright, file is moved to correct training set, "+cat+". Retraining now...");
 				/*
 				 * Refill and retrain the BagOfWords with the newly added data
 				 */
@@ -69,6 +97,7 @@ public class Learner implements Definitions {
 				processFeedbackOnVerdict(verdict, bow, file);
 			} catch(ArrayIndexOutOfBoundsException aioobe){
 				System.err.println("That was NOT one of the options. Shame on you.");
+				aioobe.printStackTrace();
 				processFeedbackOnVerdict(verdict, bow, file);
 			}
 		} else {

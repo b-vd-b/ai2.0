@@ -5,12 +5,12 @@ package model;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
 import controller.FileHandler;
-
 import controller.Tokenizer;
 import controller.TrainNaiveBayes;
 
@@ -25,7 +25,7 @@ public class BagOfWords implements Definitions {
 	public HashMap<String, Integer> documentStats;
 	public HashMap<String, Integer> distinctWordStats;
 	public HashMap<String, Integer> totalWordStats;
-	public String[] categories;
+	private String[] categories;
 
 	public BagOfWords(){
 		bagOfWords = new HashMap<String, HashMap<String, Double>>();
@@ -68,7 +68,15 @@ public class BagOfWords implements Definitions {
 	}
 	
 	public String[] getCategories(){
-		return categories;
+		return this.categories;
+	}
+	
+	public void addCategory(String cat){
+		final List<String> categories = new ArrayList<String>();
+		Collections.addAll(categories, this.getCategories());
+		Collections.addAll(categories, cat);
+		this.categories = categories.toArray(new String[categories.size()]);
+		System.out.println(this.categories.toString());
 	}
 
 	
@@ -135,7 +143,7 @@ public class BagOfWords implements Definitions {
 				}
 			}
 		}
-		System.out.println(bagOfWords.toString());
+		//System.out.println(bagOfWords.toString());
 		System.out.println(documentStats);
 		//System.out.println(getBag().toString());
 		System.out.println(distinctWordStats);
