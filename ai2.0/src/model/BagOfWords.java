@@ -74,6 +74,7 @@ public class BagOfWords implements Definitions {
 	
 	public void fillVocabulary(String[] categories){
 		this.categories = categories;
+		this.bagOfWords.clear();
 		//int totalDocumentCount = 0;
 		for (String cat : categories){
 			File folder = new File(TRAINING_DIR+"/"+SET+"/"+cat);
