@@ -54,16 +54,16 @@ public class TestRun implements Definitions {
 		/*
 		 * Let's loop through a folder with testing files, and test them against the trainedBagOfWords.
 		 */
-		for(int arg=1; arg<args.length;arg++){
-			File folder = new File(TEST_DIR+"/"+SET+"/"+args[arg]);
+		
 	
 		if (args[0].equalsIgnoreCase("gui")){
 			GUI.createAndShowGUI(bow);
 		} else {
+			for(int arg=1; arg<args.length;arg++){
+				File folder = new File(TEST_DIR+"/"+SET+"/"+args[arg]);
 			/*
 			 * Let's loop through a folder with testing files, and test them against the trainedBagOfWords.
 			 */
-			File folder = new File(TEST_DIR+"/"+SET+"/M");
 			File[] listOfFiles = folder.listFiles();
 			if (listOfFiles.length != 0){
 				for (int i=0; i < listOfFiles.length; i++){
@@ -121,4 +121,5 @@ public class TestRun implements Definitions {
 
 	
 
+}
 }
