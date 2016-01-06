@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.swing.*;
+
+import view.GUI;
 import controller.Classifier;
 import controller.FileHandler;
 import controller.Learner;
@@ -29,7 +32,7 @@ public class TestRun implements Definitions {
 	
 	/**
 	 * Test run the classifier. This method does all operations needed to see how the classifier works.
-	 * @param args
+	 * @param args Please provide "GUI" or "TUI" for the desired interface, or neither to use the TUI.
 	 */
 	public static void main(String[] args) {
 		
@@ -54,6 +57,13 @@ public class TestRun implements Definitions {
 		for(int arg=1; arg<args.length;arg++){
 			File folder = new File(TEST_DIR+"/"+SET+"/"+args[arg]);
 	
+		if (args[0].equalsIgnoreCase("gui")){
+			GUI.createAndShowGUI(bow);
+		} else {
+			/*
+			 * Let's loop through a folder with testing files, and test them against the trainedBagOfWords.
+			 */
+			File folder = new File(TEST_DIR+"/"+SET+"/M");
 			File[] listOfFiles = folder.listFiles();
 			if (listOfFiles.length != 0){
 				for (int i=0; i < listOfFiles.length; i++){
@@ -80,7 +90,7 @@ public class TestRun implements Definitions {
 						d++;
 					} 
 					
-						/*
+					/*
 					 * Here we let the user provide feedback on the decision of the classifier.
 					 */
 					try {
