@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 public class ProbabilityFormula implements Definitions {
 
-	public static HashMap<String, Double> getMultinomialWordScore(String[] categories, String input, BagOfWords bow) {
+	public static HashMap<String, Double> getMultinomialWordScore(String input, BagOfWords bow) {
 		HashMap<String,Double> resultMap = new HashMap<String,Double>();		
-		for (String cat : categories)	{
+		for (String cat : bow.getCategories())	{
 			if (bow.getBag().get(input).get(cat) != null){
 				//System.out.print(cat + ": \t" + bow.getTotalWordStats(cat) + " ");
 				//System.out.println("totaldistinctwordcount \t" + bow.getTotalDistinctWordsStats());

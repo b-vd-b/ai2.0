@@ -21,11 +21,18 @@ import model.ProbabilityFormula;
  */
 public class TestRun implements Definitions {
 
+	protected static int confusion_matrix[][] = new int[25][25];
+	protected static int a = 0;
+	protected static int b = 0;
+	protected static int c = 0;
+	protected static int d = 0;
+	
 	/**
 	 * Test run the classifier. This method does all operations needed to see how the classifier works.
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
 		/*
 		 * Let's create a new Bag of Words
 		 */
@@ -44,53 +51,62 @@ public class TestRun implements Definitions {
 		/*
 		 * Let's loop through a folder with testing files, and test them against the trainedBagOfWords.
 		 */
-		File folder = new File(TEST_DIR+"/"+SET+"/M");
-		File[] listOfFiles = folder.listFiles();
-		if (listOfFiles.length != 0){
-			for (int i=0; i < listOfFiles.length; i++){
-				File file = listOfFiles[i];
-				tnb.TrainMultinomialNaiveBayes(bow);
-				/*
-				 * Create a verdict, i.e. to which category does the testing file belong, according to the classifier 
-				 */
-				String verdict =  Classifier.verdict(
+		for(int arg=1; arg<args.length;arg++){
+			File folder = new File(TEST_DIR+"/"+SET+"/"+args[arg]);
+	
+			File[] listOfFiles = folder.listFiles();
+			if (listOfFiles.length != 0){
+				for (int i=0; i < listOfFiles.length; i++){
+					File file = listOfFiles[i];
+					//tnb.TrainMultinomialNaiveBayes(bow);
+					/*
+					 * Create a verdict, i.e. to which category does the testing file belong, according to the classifier 
+					 */
+					String verdict =  Classifier.verdict(
+							/*
+							 * Apply Multinomial Bayes probability theory to the testing file, against the trained Bag Of Words
+							 */
+							Classifier.ApplyMultinomialNaiveBayes(tnb.getTrainedBagOfWords(), file)
+							);
+					
+					System.out.println("The verdict is: " + verdict);
+					if(arg==1 && verdict.equals(args[1]) ){
+						a++;
+					} else if(arg==1 && verdict.equals(args[2])){
+						b++;
+					} else if(arg==2 && verdict.equals(args[1])){
+						c++;
+					}else if (arg==2 && verdict.equals(args[2])){
+						d++;
+					} 
+					
 						/*
-						 * Apply Multinomial Bayes probability theory to the testing file, against the trained Bag Of Words
-						 */
-						Classifier.ApplyMultinomialNaiveBayes(tnb.getTrainedBagOfWords(), file)
-						);
-				
-				System.out.println("The verdict is: " + verdict);
-				
-				/*
-				 * Here we let the user provide feedback on the decision of the classifier.
-				 */
-				try {
-					Learner.processFeedbackOnVerdict(verdict, bow, file);
-				} catch (IOException e) {
-					e.printStackTrace();
+					 * Here we let the user provide feedback on the decision of the classifier.
+					 */
+					try {
+						Learner.processFeedbackOnVerdict(verdict, bow, file);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
 				}
+				System.out.println("No more testing files");
+			} else {
+				System.out.println("There are no testing files.");
 			}
-			System.out.println("No more testing files");
-		} else {
-			System.out.println("There are no testing files.");
+			System.out.println("");
+			System.out.println("Confusion matrix of n="+(a+b+c+d)+" classifications.");
+			System.out.println("---------------------------------------------");
+			System.out.println("| act / pred   | FIRST_CLASS | SECOND_CLASS |");
+			System.out.println("|--------------|-------------|--------------|");
+			System.out.println("| FIRST_CLASS  |      "+a+"     |       "+b+"      |");
+			System.out.println("|--------------|-------------|--------------|");
+			System.out.println("| SECOND_CLASS |      "+c+"      |       "+d+"      |");
+			System.out.println("---------------------------------------------");
+			System.out.println("Accuracy of classifier = " + 100*((double)(a+d)/(a+b+c+d)) + "%");
+			System.out.println("Error rate of classifier = " + 100*((double)(b+c)/(a+b+c+d)) + "%");
 		}
-		
-/*		Classifier.ApplyMultinomialNaiveBayes(TrainNaiveBayes.TrainMultinomialNaiveBayes(CATEGORIES, bow), FileHandler.getRandomTestFile("F"));
-		System.out.println(ProbabilityFormula.getMultinomialWordScore(CATEGORIES, "because", bow));
-		
-		bow1.readAllWordsInCategory(CATEGORY_A, bow1);
-		System.out.println(bow1.bagOfWords.toString());
-		BagOfWords bow2 = new BagOfWords();
-		bow2.readAllWordsInCategory(CATEGORY_B, bow2);
-		System.out.println(bow2.bagOfWords.toString());
-		ProbabilityFormula.totalDistinctWords = ProbabilityFormula.countDistinctWords(bow1, bow2);
-		System.out.println(CATEGORY_A+"WordCount: \t\t\t" + bow1.totalWordCount);
-		System.out.println(CATEGORY_B+"WordCount: \t\t\t" + bow2.totalWordCount);
-		System.out.println(CATEGORY_A+"WordCount: \t\t\t" + bow1.distinctWordCount);
-		System.out.println(CATEGORY_B+"WordCount: \t\t\t" + bow2.distinctWordCount);
-		System.out.println("TotalDistinctWordCount: \t" + ProbabilityFormula.totalDistinctWords);*/
-		
+
 	}
 
 	

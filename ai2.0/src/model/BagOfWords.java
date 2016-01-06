@@ -151,11 +151,11 @@ public class BagOfWords implements Definitions {
 	}
 	
 	public TrainNaiveBayes trainVocabulary(BagOfWords bow){
-		return new TrainNaiveBayes(this);
+		return new TrainNaiveBayes(bow);
 	}
 	
-	public void fillAndTrainVocabulary(String[] categories){
-		fillVocabulary(categories);
-		trainVocabulary(this);
+	public void fillAndTrainVocabulary(BagOfWords bow){
+		fillVocabulary(bow.getCategories());
+		trainVocabulary(bow);
 	}
 }

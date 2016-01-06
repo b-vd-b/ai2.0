@@ -40,7 +40,7 @@ public class Learner implements Definitions {
 			/*
 			 * Refill and retrain the BagOfWords with the newly added data
 			 */
-			bow.fillAndTrainVocabulary(bow.getCategories());
+			bow.fillAndTrainVocabulary(bow);
 		} else if (s.equalsIgnoreCase("n")) {
 			/*
 			 * Is the verdict not correct, then show all the possible categories and ask the user to which category the
@@ -91,7 +91,7 @@ public class Learner implements Definitions {
 				/*
 				 * Refill and retrain the BagOfWords with the newly added data
 				 */
-				bow.fillAndTrainVocabulary(bow.getCategories());
+				bow.fillAndTrainVocabulary(bow);
 			} catch(NumberFormatException nfe){
 				System.err.println("That's no, or an incorrect number");
 				processFeedbackOnVerdict(verdict, bow, file);

@@ -23,7 +23,7 @@ public class Classifier implements Definitions {
 			
 			for (String cat : entry.getKey().getCategories()){
 				
-				double score = Math.log10(entry.getValue().get(cat))/Math.log10(2);
+				double score = entry.getValue().get(cat);
 				
 				for (String word : testFile) {
 					if (entry.getKey().getBag().containsKey(word)){

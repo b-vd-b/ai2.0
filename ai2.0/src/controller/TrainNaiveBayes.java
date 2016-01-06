@@ -55,7 +55,7 @@ public class TrainNaiveBayes implements Definitions {
 			priors.put(cat, (bow.getDocumentStats(cat)*1.0/totalDocs*1.0));
 		}
 		for (Entry<String, HashMap<String, Double>> entry : bow.getBag().entrySet()){
-			bow.getBag().put(entry.getKey(), ProbabilityFormula.getMultinomialWordScore(bow.getCategories(), entry.getKey(), bow));
+			bow.getBag().put(entry.getKey(), ProbabilityFormula.getMultinomialWordScore(entry.getKey(), bow));
 		}
 		//System.out.println(bow.getBag().toString());
 		resultMap.put(bow, priors);
