@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import controller.FileHandler;
 import controller.Tokenizer;
+import controller.TrainNaiveBayes;
 
 /**
  * @author bvdb
@@ -111,5 +112,14 @@ public class BagOfWords implements Definitions {
 			System.out.println(distinctWordStats);
 			System.out.println(totalWordStats);
 		}
+	}
+	
+	public TrainNaiveBayes trainVocabulary(BagOfWords bow){
+		return new TrainNaiveBayes(this);
+	}
+	
+	public void fillAndTrainVocabulary(String[] categories){
+		fillVocabulary(categories);
+		trainVocabulary(this);
 	}
 }
